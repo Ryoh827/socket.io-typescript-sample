@@ -1,0 +1,30 @@
+<html lang="ja">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.slim.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.js"
+      integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <form id="message-form" method="POST">
+      <input type="text" id="message" name="message" />
+      <button type="submit">送信</button>
+    </form>
+    <ul id="messages"></ul>
+    <script type="text/javascript">
+      const socket = io('http://localhost:3000');
+      $('#message-form').on('submit', function(evt) {
+        evt.preventDefault();
+        const val = $('#message').val();
+        $('#message').val('');
+        socket.emit('message', val);
+      });
+      socket.on('message', function(data) {
+        const el = `<li>${data}</li>`;
+        $('#messages').append(el);
+      });
+    </script>
+  </body>
+</html>
